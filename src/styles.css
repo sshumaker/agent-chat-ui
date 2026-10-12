@@ -182,6 +182,7 @@
 .prose-chat [data-streamdown="code-block-body"] { border: 0; border-radius: 0; background: transparent; padding: 12px 14px; font-size: 13px; line-height: 1.6; }
 .prose-chat [data-streamdown="code-block-body"] pre { background: transparent !important; }
 .prose-chat [data-streamdown="table-wrapper"] { padding: 0; gap: 0; border: 0; background: transparent; margin: 0.9em 0; }
+.prose-chat [data-streamdown="table-wrapper"] > div:first-child:not(:last-child) { padding: 0 4px 6px; }
 .prose-chat [data-streamdown="table-wrapper"] > div:last-child { border-radius: 12px; background: var(--color-surface); }
 .prose-chat [data-streamdown="table-header"] { background: var(--color-surface-2); }
 .prose-chat [data-streamdown="table-header-cell"] { font-weight: 600; font-size: 13px; }

@@ -8,7 +8,7 @@ import { Tooltip } from "./ui/tooltip";
 import { cn } from "../lib/utils";
 
 const PLUGINS = { code };
-const CONTROLS = { code: { copy: true, download: false }, table: false, image: false } as const;
+const CONTROLS = { code: { copy: true, download: false }, table: { copy: true, download: false, fullscreen: false }, image: false } as const;
 const LINK_SAFETY = { enabled: false } as const;
 // GFM reads a pair of single tildes as strikethrough; models write "~45 min (~$250)" to mean
 // "about", so only "~~double~~" strikes through.

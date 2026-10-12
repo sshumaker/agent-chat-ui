@@ -271,6 +271,8 @@ export const AssistantMessage = memo(function AssistantMessage({
 }) {
   const { agentName } = useChatBranding();
   const blocks = toBlocks(turn, artifacts);
+  const groups = groupRuns(blocks);
+  const startsWithActivity = !turn.wake && groups[0]?.kind === "run";
   const running = turn.status === "running";
   const text = turnText(turn);
   const lastBlock = blocks[blocks.length - 1];
@@ -278,7 +280,7 @@ export const AssistantMessage = memo(function AssistantMessage({
   const waitingOn = !running && isLast ? runningChildren(turn) : [];
   return (
     <div className="group/turn flex gap-3 animate-rise" data-testid="assistant-message" data-status={turn.status} data-wake={turn.wake ? turn.wake.reason : undefined}>
-      <AgentAvatar className="mt-0.5" active={running} />
+      <AgentAvatar className={startsWithActivity ? "mt-2" : "mt-0.5"} active={running} />
       <div className="min-w-0 flex-1 pt-0.5">
         {turn.wake ? (
           <p className="mb-1 flex items-center gap-1.5 text-xs text-faint" data-testid="wake-note">
@@ -292,7 +294,7 @@ export const AssistantMessage = memo(function AssistantMessage({
                   : "Resumed after subagents finished"}
           </p>
         ) : null}
-        {groupRuns(blocks).map((b, i, all) =>
+        {groups.map((b, i, all) =>
           b.kind === "run" ? <ActivityRun key={b.key} run={b} settled={!running || i < all.length - 1} /> : renderBlock(b),
         )}
         {showWorking && starting ? <StartingIndicator since={turn.ts} /> : null}
