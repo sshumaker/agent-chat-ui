@@ -1,0 +1,16 @@
+"use client";
+export { AgentChat, type AgentChatProps } from "./components/chat/chat-view";
+export { ChatProvider, AgentAvatar, useChatBranding, type ChatBranding, type ChatTheme } from "./components/branding";
+export { ChatContext, useChatActions, type ChatActions } from "./components/chat/chat-context";
+export { Composer, type ComposerProps, type ComposerHandle } from "./components/chat/composer";
+export { AssistantMessage, UserMessage } from "./components/chat/messages";
+export { ApprovalCard } from "./components/chat/approval-card";
+export { QuestionCard } from "./components/chat/question-card";
+export { DocumentsPanel } from "./components/chat/documents-panel";
+export { EmptyGreeting, SuggestionChips, type ChatSuggestion } from "./components/chat/empty-state";
+export { StatusPill } from "./components/chat/status-pill";
+export { Markdown, CodeBlock } from "./components/markdown";
+export { InteractionResolvedError, type AgentChatAdapter, type ChatState, type SendMessage, type SendResult, type ArtifactAccess, type StreamStatus } from "./adapter";
+export * from "./model";
+export { type Outgoing } from "./lib/outgoing";
+export { type ThreadStatus, threadStatus, toBlocks } from "./lib/view-model";

@@ -1,0 +1,24 @@
+.demo-shell { height: 100dvh; display: flex; flex-direction: column; background: #faf9f6; color: #211f1c; font-family: system-ui, sans-serif; }
+.demo-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; padding: 14px 20px; border-bottom: 1px solid #e5e1d8; background: #fff; }
+.demo-identity { display: flex; gap: 10px; align-items: center; margin-right: 10px; }
+.demo-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; color: #0f766e; background: #0d948818; font-family: Georgia, serif; font-size: 23px; }
+.demo-identity strong { display: block; font-size: 13px; font-weight: 650; }
+.demo-identity div > span { display: block; font-size: 11px; color: #77716b; margin-top: 3px; }
+.demo-scenarios, .demo-controls { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.demo-controls { margin-left: auto; }
+.demo-toolbar button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 10px; background: transparent; color: inherit; border: 1px solid transparent; border-radius: 8px; font: 12px system-ui; cursor: pointer; white-space: nowrap; }
+.demo-toolbar button:hover { background: #f4f2ed; }
+.demo-toolbar button[aria-pressed="true"] { background: #0d948814; color: #0f766e; font-weight: 600; }
+.demo-toolbar button:disabled { opacity: .5; cursor: default; }
+.demo-toolbar button:focus-visible { outline: 2px solid #0d9488; outline-offset: 2px; }
+.demo-note { display: flex; align-items: center; gap: 7px; padding: 9px 22px; color: #78716c; border-bottom: 1px solid #e5e1d8; font-size: 11px; }
+.demo-dot { width: 6px; height: 6px; background: #0d9488; border-radius: 50%; }
+.demo-tip { margin-left: auto; }
+.demo-chat { flex: 1; min-height: 0; }
+.demo-dark { background: #1b1a18; color: #ecebe6; }
+.demo-dark .demo-toolbar { background: #242320; border-color: #33312d; }
+.demo-dark .demo-note { color: #a39e94; border-color: #33312d; }
+.demo-dark .demo-toolbar button:hover { background: #33312d; }
+.demo-dark .demo-toolbar button[aria-pressed="true"] { color: #5eead4; background: #0d948825; }
+.demo-dark .demo-identity div > span { color: #a39e94; }
+@media (max-width: 760px) { .demo-toolbar { gap: 8px; padding: 10px 12px; } .demo-scenarios { order: 3; width: 100%; overflow-x: auto; flex-wrap: nowrap; } .demo-tip { display: none; } .demo-identity { margin-right: 0; } .demo-note { padding: 8px 14px; } }
