@@ -90,7 +90,7 @@ The host owns the canonical transcript, subscription, persistence, session creat
 
 ## Branding and styling
 
-All identity is configured per instance through `branding`. The defaults are “Assistant,” a generic robot icon, and a neutral greeting. Suggestions are supplied by the host; none assume connected services. Each suggestion accepts an optional `icon: ReactNode`, for example `{ text: "Draft an email", icon: <MailIcon /> }`. Icons are sized and hidden from screen readers so the button label remains its text. Pass `null` to hide the avatar, greeting, tagline, or footer. Set `appearance="dark"` for the dark palette.
+All identity is configured per instance through `branding`. The defaults are “Assistant,” a generic robot icon, and a neutral greeting. Suggestions are supplied by the host; none assume connected services. Each suggestion accepts an optional `icon: ReactNode`, for example `{ text: "Draft an email", icon: <MailIcon /> }`. Icons are sized and hidden from screen readers so the button label remains its text. Pass `null` to hide the avatar, greeting, tagline, or footer. Set `appearance="dark"` for the dark palette, or `appearance="system"` to follow the viewer's light/dark setting live. The empty-state greeting uses `--chat-font-heading` (defaults to the serif).
 
 Theme variables are scoped to `.agent-chat-ui`; compiled CSS scopes resets, utilities, and prose styles to that root. Tooltip and document-menu portals remain inside the root to inherit its theme. The stylesheet includes its own generated utilities, so no host Tailwind source scanning is needed. Different instances can use different branding and themes. Hosts with competing utility rules should load this stylesheet after their base CSS.
 

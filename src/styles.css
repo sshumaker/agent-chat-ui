@@ -10,6 +10,8 @@
 .agent-chat-ui {
   --chat-font-sans: ui-sans-serif, system-ui, sans-serif;
   --chat-font-serif: Georgia, ui-serif, serif;
+  /* The empty-state greeting; set it to your heading face (defaults to the serif). */
+  --chat-font-heading: var(--chat-font-serif);
   --chat-font-mono: ui-monospace, monospace;
   --chat-background: #faf9f6;
   --chat-foreground: #211f1c;
@@ -89,6 +91,7 @@
   --shadow-card: var(--chat-shadow-card);
   --font-sans: var(--chat-font-sans);
   --font-serif: var(--chat-font-serif);
+  --font-heading: var(--chat-font-heading);
   --font-mono: var(--chat-font-mono);
   --animate-fade-in: fade-in 180ms ease-out both;
   --animate-rise: rise 220ms cubic-bezier(0.2, 0.8, 0.2, 1) both;

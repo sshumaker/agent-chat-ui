@@ -1,6 +1,6 @@
 "use client";
 export { AgentChat, type AgentChatProps } from "./components/chat/chat-view";
-export { ChatProvider, AgentAvatar, useChatBranding, type ChatBranding, type ChatTheme } from "./components/branding";
+export { ChatProvider, AgentAvatar, useChatBranding, type ChatBranding, type ChatTheme, type ChatAppearance } from "./components/branding";
 export { ChatContext, useChatActions, type ChatActions } from "./components/chat/chat-context";
 export { Composer, type ComposerProps, type ComposerHandle } from "./components/chat/composer";
 export { AssistantMessage, UserMessage } from "./components/chat/messages";

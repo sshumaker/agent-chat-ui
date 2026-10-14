@@ -5,7 +5,7 @@ import { ArrowDownIcon, FilesIcon, MessageSquarePlusIcon, UploadIcon } from "luc
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
-import { ChatProvider, useChatBranding, type ChatBranding, type ChatTheme } from "../branding";
+import { ChatProvider, useChatBranding, type ChatBranding, type ChatTheme, type ChatAppearance } from "../branding";
 import { inThread, isQueued, lastUserMessage, unabsorbed, userTurns, type Outgoing } from "../../lib/outgoing";
 import { artifactList, isBusy, threadStatus, autoOpenArtifact } from "../../lib/view-model";
 import { cn } from "../../lib/utils";
@@ -23,7 +23,7 @@ export interface AgentChatProps {
   adapter: AgentChatAdapter;
   branding?: ChatBranding;
   theme?: ChatTheme;
-  appearance?: "light" | "dark";
+  appearance?: ChatAppearance;
   userName?: string;
   suggestions?: ChatSuggestion[];
   onNewChat?: () => void;
@@ -53,6 +53,9 @@ function ChatView({ state, adapter, userName, suggestions, onNewChat }: AgentCha
   const [actionError, setActionError] = useState<string | null>(null);
   useEffect(() => { if (!agentBusy) setStopping(false); }, [agentBusy]);
   const send = useCallback(async (text: string, attachments: Attachment[], replaceCid?: string) => {
+    // Sending means "show me what happens next": follow the thread again.
+    stuckRef.current = true;
+    setStuck(true);
     const cid = crypto.randomUUID();
     const entry: Outgoing = { cid, text, attachments, status: agentBusy ? "queued" : "sending", baseUserCount: userTurns(transcript).length };
     setOutgoing((o) => [...o.filter((x) => x.cid !== replaceCid), entry]);
@@ -128,6 +131,10 @@ function ChatView({ state, adapter, userName, suggestions, onNewChat }: AgentCha
   const contentRef = useRef<HTMLDivElement>(null);
   const [stuck, setStuck] = useState(true);
   const stuckRef = useRef(true);
+  // Only the reader unpins the thread. A scroll event can also come from layout (a row shrinks, then a big chunk of
+  // a streamed reply lands before the event is delivered); treating that as "they scrolled away" stranded the end
+  // of the reply below the fold. So remember when the reader last touched the scroller, and only then unpin.
+  const lastUserScroll = useRef(0);
   useEffect(() => {
     const el = scrollRef.current;
     const content = contentRef.current;
@@ -136,14 +143,43 @@ function ChatView({ state, adapter, userName, suggestions, onNewChat }: AgentCha
       if (stuckRef.current) el.scrollTop = el.scrollHeight;
     });
     ro.observe(content);
-    return () => ro.disconnect();
+    const mark = () => {
+      lastUserScroll.current = Date.now();
+    };
+    const keys = (e: KeyboardEvent) => {
+      if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(e.key)) mark();
+    };
+    // pointerdown on the scroller itself (not its content) is a scrollbar drag.
+    const pointer = (e: PointerEvent) => {
+      if (e.target === el) mark();
+    };
+    el.addEventListener("wheel", mark, { passive: true });
+    el.addEventListener("touchmove", mark, { passive: true });
+    el.addEventListener("keydown", keys);
+    el.addEventListener("pointerdown", pointer);
+    return () => {
+      ro.disconnect();
+      el.removeEventListener("wheel", mark);
+      el.removeEventListener("touchmove", mark);
+      el.removeEventListener("keydown", keys);
+      el.removeEventListener("pointerdown", pointer);
+    };
   }, [data.loaded, transcript.items.length === 0 && inThreadOut.length === 0]);
   const onScroll = () => {
     const el = scrollRef.current;
     if (!el) return;
     const near = el.scrollHeight - el.scrollTop - el.clientHeight < 80;
-    stuckRef.current = near;
-    setStuck(near);
+    if (near) {
+      stuckRef.current = true;
+      setStuck(true);
+      return;
+    }
+    if (Date.now() - lastUserScroll.current < 1000) {
+      stuckRef.current = false;
+      setStuck(false);
+    } else if (stuckRef.current) {
+      el.scrollTop = el.scrollHeight; // a reflow moved us: stay pinned
+    }
   };
   const jumpToLatest = () => {
     const el = scrollRef.current;

@@ -1,7 +1,7 @@
 "use client";
 
 import { BotIcon } from "lucide-react";
-import { createContext, useContext, useState, type CSSProperties, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { TooltipProvider } from "./ui/tooltip";
 import { cn } from "../lib/utils";
 
@@ -15,6 +15,23 @@ export interface ChatBranding {
   placeholder?: string;
 }
 export type ChatTheme = CSSProperties & { [variable: `--${string}`]: string | number | undefined };
+/** "system" follows the viewer's light/dark setting, live. */
+export type ChatAppearance = "light" | "dark" | "system";
+
+const DARK_QUERY = "(prefers-color-scheme: dark)";
+function useSystemDark(enabled: boolean): boolean {
+  const query = () => (typeof window !== "undefined" && typeof window.matchMedia === "function" ? window.matchMedia(DARK_QUERY) : null);
+  const [dark, setDark] = useState(() => Boolean(enabled && query()?.matches));
+  useEffect(() => {
+    const mq = enabled ? query() : null;
+    if (!mq) return;
+    setDark(mq.matches);
+    const on = (e: MediaQueryListEvent) => setDark(e.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, [enabled]);
+  return dark;
+}
 const BrandingContext = createContext<ChatBranding & { agentName: string }>({ agentName: "Assistant" });
 export const PortalContext = createContext<HTMLElement | null>(null);
 export const useChatBranding = () => useContext(BrandingContext);
@@ -24,16 +41,18 @@ export function ChatProvider({ children, branding = {}, theme, appearance = "lig
   children: ReactNode;
   branding?: ChatBranding;
   theme?: ChatTheme;
-  appearance?: "light" | "dark";
+  appearance?: ChatAppearance;
   className?: string;
   style?: CSSProperties;
 }) {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
+  const systemDark = useSystemDark(appearance === "system");
+  const dark = appearance === "dark" || (appearance === "system" && systemDark);
   return (
     <BrandingContext.Provider value={{ ...branding, agentName: branding.agentName ?? "Assistant" }}>
       <PortalContext.Provider value={container}>
         <TooltipProvider>
-          <div ref={setContainer} className={cn("agent-chat-ui", appearance === "dark" && "dark", className)} style={{ ...theme, ...style }}>
+          <div ref={setContainer} className={cn("agent-chat-ui", dark && "dark", className)} style={{ ...theme, ...style }}>
             {children}
           </div>
         </TooltipProvider>

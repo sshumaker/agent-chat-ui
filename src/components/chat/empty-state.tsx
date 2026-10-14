@@ -11,7 +11,7 @@ export function EmptyGreeting({ name }: { name?: string }) {
   const brand = useChatBranding();
   const first = name?.split(/\s+/)[0];
   return <div className="mb-7 text-center animate-rise">
-    <h1 className="font-serif text-[2rem] leading-tight font-medium tracking-tight text-foreground sm:text-[2.4rem]" suppressHydrationWarning>
+    <h1 className="font-heading text-[2rem] leading-tight font-medium tracking-tight text-foreground sm:text-[2.4rem]" suppressHydrationWarning>
       {brand.greeting === undefined ? `${greeting()}${first ? `, ${first}` : ""}` : brand.greeting}
     </h1>
     <p className="mt-2 text-[15px] text-muted-foreground">{brand.tagline === undefined ? "How can I help?" : brand.tagline}</p>
