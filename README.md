@@ -2,6 +2,8 @@
 
 A standalone, white-label React agent chat renderer. Includes streaming Markdown and code, message composition and attachments, queued sends, tool activity, subagents, approvals, questions, usage details, and document previews. No conversation list, routing, authentication, connector management, or built-in agent transport.
 
+![Agent Chat UI demo: streaming replies with a thought process, tool calls, Python code output and a Markdown table; a subagent run with a document preview panel; an email approval card; a multiple-choice question card; and the dark appearance](docs/demo.gif)
+
 ## Build and preview
 
 ```sh
