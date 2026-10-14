@@ -1,6 +1,6 @@
 # Agent Chat UI
 
-A standalone, white-label React chat renderer. Includes streaming Markdown and code, message composition and attachments, queued sends, tool activity, subagents, approvals, questions, usage details, and document previews. No conversation list, routing, authentication, connector management, or built-in agent transport.
+A standalone, white-label React agent chat renderer. Includes streaming Markdown and code, message composition and attachments, queued sends, tool activity, subagents, approvals, questions, usage details, and document previews. No conversation list, routing, authentication, connector management, or built-in agent transport.
 
 ## Build and preview
 
