@@ -23,7 +23,8 @@
     "build": "vite build && tsc -p tsconfig.build.json && node scripts/build-css.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "dev": "vite --host 127.0.0.1"
+    "dev": "vite --host 127.0.0.1",
+    "prepare": "npm run build"
   },
   "peerDependencies": {
     "react": ">=18.2.0 <20",
